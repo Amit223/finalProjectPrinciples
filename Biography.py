@@ -22,7 +22,7 @@ Actors_event = []  # {event year, event name , (optional) Description}
 
 
 # specify the url-todo in function
-wiki = "https://en.wikipedia.org/wiki/Ariana_Grande"
+wiki = "https://en.wikipedia.org/wiki/Justin_Timberlake_discography"
 # Query the website and return the html to the variable 'page'
 page = urlopen(wiki)
 # Parse the html in the 'page' variable, and store it in Beautiful Soup format
@@ -69,3 +69,17 @@ def getSingerSpouses(actorSoup):
     except:
         return "not available"
 
+def getSingerSingles(actorSoup):
+    for caption in actorSoup.find_all('caption'):
+        if 'singles as lead artist' in caption.get_text():
+            table = caption.find_parent('table')
+            break
+    cells=[]
+    for tr in table.find_all('tr'):
+        cells.append(tr)
+    cells.pop(0)
+    cells.pop(0)
+    print(cells)
+
+
+getSingerSingles(actorSoup)
