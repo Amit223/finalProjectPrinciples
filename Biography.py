@@ -5,7 +5,10 @@ import urllib
 import re
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from PIL import Image
+import requests
+from io import BytesIO
+
 header = {'User-Agent': 'Mozilla/5.0'}
 
 events_Dic = {"Born": 1, "Death": 2, "Marrige": 3, "Divorce": 4, "Single": 5,
@@ -22,29 +25,34 @@ Actors_event = []  # {event year, event name , (optional) Description}
 
 
 # specify the url-todo in function
-wiki = "https://en.wikipedia.org/wiki/Rihanna_discography"
+wiki = "https://en.wikipedia.org/wiki/Justin_Timberlake"
 # Query the website and return the html to the variable 'page'
 page = urlopen(wiki)
 # Parse the html in the 'page' variable, and store it in Beautiful Soup format
-actorSoup = BeautifulSoup(page, 'lxml')
+singerSoup = BeautifulSoup(page, 'lxml')
 
-right_table = actorSoup.find('table', class_='wikitable plainrowheaders sortable')
+#right_table = singerSoup.find('table', class_='wikitable plainrowheaders sortable')
 
 #get picture
+def getSingerPicture(singerSoup):
+    #right_table=singerSoup.find('table',class_='infobox biography vcard')
+    #src=right_table.find('img')
+    images = singerSoup.select('table.infobox a.image img[src]')
+    return images[0]['src']
 
 #get birthdate
-def getSingerBirthDate(actorSoup):
+def getSingerBirthDate(singerSoup):
     try:
-        right_table = actorSoup.find('table', class_='infobox biography vcard')
+        right_table = singerSoup.find('table', class_='infobox biography vcard')
         return right_table.find('span', class_='bday').string[0:4]
     except:
         return "not available"
 
 #get spouces of actor- marrige date and divorce date
-def getSingerSpouses(actorSoup):
+def getSingerSpouses(singerSoup):
     try:
         listSpouses = []
-        right_table = actorSoup.find('table', class_='infobox biography vcard')
+        right_table = singerSoup.find('table', class_='infobox biography vcard')
         listCells = (right_table.find_all('td'))
         for i in range(0, len(listCells)):
             if listCells[i].find_all("abbr"):
@@ -70,21 +78,24 @@ def getSingerSpouses(actorSoup):
     except:
         return "not available"
 
-def getSingerSingles(actorSoup):
-    for caption in actorSoup.find_all('caption'):
+def getSingerSingles(singerSoup):
+    for caption in singerSoup.find_all('caption'):
         if 'singles as lead artist' in caption.get_text():
             table = caption.find_parent('table')
             break
     cells=[]
     for tr in table.find_all('tr'):
         cells.append(tr)
-    singles_dic=[]
+    singles_dic=[] #year-5(singles)-name
+    #remove the headlines
     cells.pop(0)
     cells.pop(0)
     i=0
     while i< len(cells):
         year=(cells[i].find('td').getText())
+        # remove /n
         year=year[0:len(year)-1]
+        #get number of singles in the same year
         if "span" in str(cells[i].find('td')):
             index=int(str(cells[i].find('td'))[13:14])
         else:
@@ -92,12 +103,18 @@ def getSingerSingles(actorSoup):
         for j in range(0,index):
             if cells[i].find('th')!=None:
                 name=cells[i].find('th').getText()
+                #remove /n
                 name = name[0:len(name) - 1]
+                if "(" in name:
+                    name=name[1:name.index("(")-1]+name[name.index("("):len((name))]
+                else:
+                    name=name[1:len(name)-1]
                 singles_dic.append([year,events_Dic["Single"],name])
                 i+=1
             else:
                 i+=1
     return singles_dic
+
 
 
 def getSingerStudioAlbums(singerSoup):
@@ -129,7 +146,3 @@ def getSingerStudioAlbums(singerSoup):
     return albums_dic
 
 
-
-
-
-print(getSingerStudioAlbums(actorSoup))
