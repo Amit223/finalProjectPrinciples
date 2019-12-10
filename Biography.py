@@ -8,8 +8,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 header = {'User-Agent': 'Mozilla/5.0'}
 
-events_Dic = {"Born": 1, "Death": 2, "Marrige": 3, "Divorce": 4, "Film": 5, "Television": 6,
-              "Music Video": 7}  # event-index
+events_Dic = {"Born": 1, "Death": 2, "Marrige": 3, "Divorce": 4, "Single": 5,
+              "Album": 6}  # event-index
 events_Pic_Dic = {}  # add pictures for each index
 Actors_event = []  # {event year, event name , (optional) Description}
 
@@ -22,7 +22,7 @@ Actors_event = []  # {event year, event name , (optional) Description}
 
 
 # specify the url-todo in function
-wiki = "https://en.wikipedia.org/wiki/Justin_Timberlake_discography"
+wiki = "https://en.wikipedia.org/wiki/Rihanna_discography"
 # Query the website and return the html to the variable 'page'
 page = urlopen(wiki)
 # Parse the html in the 'page' variable, and store it in Beautiful Soup format
@@ -30,6 +30,7 @@ actorSoup = BeautifulSoup(page, 'lxml')
 
 right_table = actorSoup.find('table', class_='wikitable plainrowheaders sortable')
 
+#get picture
 
 #get birthdate
 def getSingerBirthDate(actorSoup):
@@ -77,9 +78,28 @@ def getSingerSingles(actorSoup):
     cells=[]
     for tr in table.find_all('tr'):
         cells.append(tr)
+    singles_dic=[]
     cells.pop(0)
     cells.pop(0)
-    print(cells)
+    i=0
+    while i< len(cells):
+        year=(cells[i].find('td').getText())
+        year=year[0:len(year)-1]
+        if "span" in str(cells[i].find('td')):
+            index=int(str(cells[i].find('td'))[13:14])
+        else:
+            index=1
+        for j in range(0,index):
+            if cells[i].find('th')!=None:
+                name=cells[i].find('th').getText()
+                name = name[0:len(name) - 1]
+                singles_dic.append([year,events_Dic["Single"],name])
+                i+=1
+            else:
+                i+=1
+    return singles_dic
+
+
 
 
 getSingerSingles(actorSoup)
