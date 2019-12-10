@@ -115,3 +115,34 @@ def getSingerSingles(singerSoup):
                 i+=1
     return singles_dic
 
+
+
+def getSingerStudioAlbums(singerSoup):
+    for caption in singerSoup.find_all('caption'):
+        if 'List of studio albums' in caption.get_text():
+            table = caption.find_parent('table')
+            break
+    cells=[]
+    for tr in table.find_all('tr'):
+        cells.append(tr)
+    albums_dic=[]
+    cells.pop(0)
+    cells.pop(0)
+    i=0
+    while i< len(cells):
+        year=(cells[i].find('td').getText())
+        year=year.split('\n')[1].split(' ')
+        if 'Released' in year[0]:
+            year=year[3]
+        else:
+            break
+        if cells[i].find('th')!=None:
+            name=cells[i].find('th').getText()
+            name = name[0:len(name) - 1]
+            albums_dic.append([year,events_Dic["Album"],name])
+            i+=1
+        else:
+            i+=1
+    return albums_dic
+
+
