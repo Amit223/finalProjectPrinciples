@@ -78,13 +78,16 @@ def getSingerSingles(actorSoup):
     cells=[]
     for tr in table.find_all('tr'):
         cells.append(tr)
-    singles_dic=[]
+    singles_dic=[] #year-5(singles)-name
+    #remove the headlines
     cells.pop(0)
     cells.pop(0)
     i=0
     while i< len(cells):
         year=(cells[i].find('td').getText())
+        # remove /n
         year=year[0:len(year)-1]
+        #get number of singles in the same year
         if "span" in str(cells[i].find('td')):
             index=int(str(cells[i].find('td'))[13:14])
         else:
@@ -92,7 +95,12 @@ def getSingerSingles(actorSoup):
         for j in range(0,index):
             if cells[i].find('th')!=None:
                 name=cells[i].find('th').getText()
+                #remove /n
                 name = name[0:len(name) - 1]
+                if "(" in name:
+                    name=name[1:name.index("(")-1]+name[name.index("("):len((name))]
+                else:
+                    name=name[1:len(name)-1]
                 singles_dic.append([year,events_Dic["Single"],name])
                 i+=1
             else:
@@ -102,4 +110,4 @@ def getSingerSingles(actorSoup):
 
 
 
-getSingerSingles(actorSoup)
+#print(getSingerSingles(actorSoup))
