@@ -16,21 +16,18 @@ events_Pic_Dic = {}  # add pictures for each index
 Actors_event = []  # {event year, event name , (optional) Description}
 
 
-# specify the url-todo in function
-wiki = "https://en.wikipedia.org/wiki/Justin_Timberlake"
-# Query the website and return the html to the variable 'page'
-page = urlopen(wiki)
-# Parse the html in the 'page' variable, and store it in Beautiful Soup format
-singerSoup = BeautifulSoup(page, 'lxml')
 
 ###this class gets biography for singers using the url of them###
 class BiograpyGetter():
 
     def __init__(self,url,discography_url):
+        # Query the website and return the html to the variable 'page'
         page = urlopen(url)
-        self.singerSoup = BeautifulSoup(page, 'lxml')
         discograph_page=urlopen(discography_url)
+        # Parse the html in the 'page' variable, and store it in Beautiful Soup format
+        self.singerSoup = BeautifulSoup(page, 'lxml')
         self.discograpySoup=BeautifulSoup(discograph_page, 'lxml')
+        #add dictionary of events and their index 
         self.events_Dic = {"Born": 1, "Death": 2, "Marrige": 3, "Divorce": 4, "Single": 5,
                       "Album": 6}  # event-index
 
