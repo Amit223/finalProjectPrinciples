@@ -2,33 +2,19 @@ from Biography import BiograpyGetter
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.dates as mdates
+import matplotlib.image as mpimg
 from datetime import datetime
+from PIL import Image
+import requests
+from io import BytesIO
 
 
 singer_picture=None
-def funcTester():
-    singer="Justin_Timberlake"
-    url="https://en.wikipedia.org/wiki/"+singer
-    discography_url="https://en.wikipedia.org/wiki/"+singer+"_discography"
-    bio=BiograpyGetter(url,discography_url)
-    #test1:
-    print(bio.getSingerPicture())
-    #test2:
-    print(bio.getSingerBirthDate())
-    #test3:
-    print(bio.getSingerSpouses())
-    #test4:
-    print(bio.getSingerSingles())
-    #test 5:
-    print(bio.getSingerStudioAlbums())
-
 
 #this function opens gui and show singer's life
 def main():
     sorted_list_of_dates = get_dates("Justin Timberlake")
-    print(sorted_list_of_dates)
     visualization(sorted_list_of_dates,"Justin Timberlake")
-
 
 
 def get_dates(singer_name):
@@ -55,10 +41,10 @@ def get_dates(singer_name):
     list.sort(key=lambda x: x[0])
     return list
 
-def visualization(list,name):
-    dates=[x[0]for x in list]
+def visualization(list_,name):
+    dates=[x[0]for x in list_]
     dates = [datetime.strptime(d, "%Y") for d in dates]
-    names=[x[2]for x in list]
+    names=[x[2]for x in list_]
     print( names)
     levels = np.array([-5, 5, -3, 3, -1, 1])
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -88,7 +74,7 @@ def visualization(list,name):
     fig.autofmt_xdate()
 
     # Remove components for a cleaner look
-    #plt.setp((ax.get_yticklabels() + ax.get_yticklines() +list(ax.spines.values())), visible=False)
+    plt.setp((ax.get_yticklabels() + ax.get_yticklines() +list(ax.spines.values())), visible=False)
     plt.show()
 
 main()
