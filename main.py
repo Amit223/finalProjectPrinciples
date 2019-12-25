@@ -26,7 +26,8 @@ def funcTester():
 #this function opens gui and show singer's life
 def main():
     sorted_list_of_dates = get_dates("Justin Timberlake")
-    visualization(sorted_list_of_dates)
+    print(sorted_list_of_dates)
+    visualization(sorted_list_of_dates,"Justin Timberlake")
 
 
 
@@ -54,10 +55,11 @@ def get_dates(singer_name):
     list.sort(key=lambda x: x[0])
     return list
 
-def visualization(list):
+def visualization(list,name):
     dates=[x[0]for x in list]
     dates = [datetime.strptime(d, "%Y") for d in dates]
     names=[x[2]for x in list]
+    print( names)
     levels = np.array([-5, 5, -3, 3, -1, 1])
     fig, ax = plt.subplots(figsize=(8, 5))
 
@@ -78,11 +80,11 @@ def visualization(list):
         ax.text(idate, level, iname,
                 horizontalalignment='right', verticalalignment=vert, fontsize=14,
                 backgroundcolor=(1., 1., 1., .3))
-    ax.set(title="Matplotlib release dates")
+    ax.set(title=name)
     # Set the xticks formatting
     # format xaxis with 3 month intervals
-    ax.get_xaxis().set_major_locator(mdates.MonthLocator(interval=3))
-    ax.get_xaxis().set_major_formatter(mdates.DateFormatter("%b %Y"))
+    ax.get_xaxis().set_major_locator(mdates.MonthLocator(interval=12))
+    ax.get_xaxis().set_major_formatter(mdates.DateFormatter("%Y"))
     fig.autofmt_xdate()
 
     # Remove components for a cleaner look
