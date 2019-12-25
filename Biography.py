@@ -44,7 +44,7 @@ class BiograpyGetter():
             right_table = self.singerSoup.find('table', class_='infobox biography vcard')
             return [right_table.find('span', class_='bday').string[0:4],self.events_Dic['Born'],"Born"]
         except:
-            return "not available"
+            return []
 
 
     #get spouces of actor- marrige date and divorce date
@@ -75,7 +75,7 @@ class BiograpyGetter():
                     break
             return listSpouses
         except:
-            return "not available"
+            return []
 
 
     #get main singles og actor
