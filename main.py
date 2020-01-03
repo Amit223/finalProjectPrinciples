@@ -1,8 +1,10 @@
+from matplotlib.offsetbox import OffsetImage
+
 from Biography import BiograpyGetter
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 import numpy as np
 import matplotlib.dates as mdates
-import matplotlib.image as mpimg
 from datetime import datetime
 from PIL import Image
 import requests
@@ -13,8 +15,9 @@ singer_picture=None
 
 #this function opens gui and show singer's life
 def main():
-    sorted_list_of_dates = get_dates("Justin Timberlake")
-    visualization(sorted_list_of_dates,"Justin Timberlake")
+    sorted_list_of_dates = get_dates("Ariana Grande")
+    baby_img = mpimg.imread('baby.jpg')
+    visualization(sorted_list_of_dates,"Ariana Grande",baby_img)
 
 
 def get_dates(singer_name):
@@ -41,13 +44,18 @@ def get_dates(singer_name):
     list.sort(key=lambda x: x[0])
     return list
 
-def visualization(list_,name):
+def visualization(list_,name,img):
     dates=[x[0]for x in list_]
+    print(dates[len(list_)-1])
+    print(dates[0])
+    num_of_years=int(dates[len(list_)-1])-int(dates[0])+1+2
     dates = [datetime.strptime(d, "%Y") for d in dates]
     names=[x[2]for x in list_]
-    print( names)
     levels = np.array([-5, 5, -3, 3, -1, 1])
-    fig, ax = plt.subplots(figsize=(8, 5))
+    #get x:
+    print(num_of_years)
+
+    fig, ax = plt.subplots(figsize=(10, 5))
 
     # Create the base line
     start = min(dates)
@@ -58,7 +66,6 @@ def visualization(list_,name):
     for ii, (iname, idate) in enumerate(zip(names, dates)):
         level = levels[ii % 6]
         vert = 'top' if level < 0 else 'bottom'
-
         ax.scatter(idate, 0, s=100, facecolor='w', edgecolor='k', zorder=9999)
         # Plot a line up to the text
         ax.plot((idate, idate), (0, level), c='r', alpha=.7)
@@ -66,6 +73,8 @@ def visualization(list_,name):
         ax.text(idate, level, iname,
                 horizontalalignment='right', verticalalignment=vert, fontsize=14,
                 backgroundcolor=(1., 1., 1., .3))
+        fig.figimage(img, 2000, level)
+
     ax.set(title=name)
     # Set the xticks formatting
     # format xaxis with 3 month intervals
