@@ -108,8 +108,13 @@ class BiograpyGetter():
                     name = name[0:len(name) - 1]
                     if "(" in name:
                         name=name[1:name.index("(")-1]+name[name.index("("):len((name))]
+                        if 'featuring' in name[name.index("("):len(name)] or 'with' in name[name.index("("):len(name)]:#need to remove all ()
+                            name=name[0:name.index("(")]
+
                     elif "[" in name:
                         name = name[1:name.index("[") - 1] + name[name.index("["):len((name))]
+                        if 'Z' in name[name.index("["):len(name)] or 'Q' in name[name.index("["):len(name)] or 'T' in name[name.index("["):len(name)] or 'R' in name[name.index("["):len(name)]:
+                            name=name[0:name.index("[")]
                     else:
                         name=name[1:len(name)-1]
                     singles_dic.append([year,self.events_Dic["Single"],name])
