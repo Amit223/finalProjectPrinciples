@@ -22,10 +22,16 @@ def main():
     global currSingerName
     list_of_singers=['Lady Gaga','Ariana Grande','Selena Gomez','Justin Timberlake','Rihanna']
     gui(list_of_singers)
+
+
+
+def singerVisualization():
     singer_name=currSingerName
     sorted_list_of_dates = get_dates(singer_name)
     sorted_list_of_dates=arrange_array(sorted_list_of_dates)
     visualization(sorted_list_of_dates,singer_name)
+
+
 
 def gui(list_of_singers):
     master = tkr.Tk()
@@ -40,7 +46,7 @@ def gui(list_of_singers):
     set2=tkr.OptionMenu(master, var, *list_of_singers, command=callback)
     set2.configure(font=("Arial",20))
     set2.grid(row=1, column=0)
-    set3 = tkr.Button(master, text="Submit name", command=master.destroy)
+    set3 = tkr.Button(master, text="Submit name", command=singerVisualization)
     set3.configure(font=("Arial",16))
     set3.grid(row=2, column=0)
 
