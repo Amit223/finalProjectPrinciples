@@ -81,7 +81,7 @@ class BiograpyGetter():
     #get main singles og actor
     def getSingerSingles(self):
         for caption in self.discograpySoup.find_all('caption'):
-            if 'singles as lead artist' in caption.get_text():
+            if 'singles as lead artist' in caption.get_text() or 'List of singles' in caption.get_text():
                 table = caption.find_parent('table')
                 break
         cells=[]

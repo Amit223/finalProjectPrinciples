@@ -20,7 +20,8 @@ events_Dic = {1:"Born" , 2:"Died",  3:"Married",  4:"Divorced",  5:"Single",
 #this function opens gui and show singer's life
 def main():
     global currSingerName
-    list_of_singers=['Lady Gaga','Ariana Grande','Selena Gomez','Justin Timberlake','Rihanna']
+    list_of_singers=sorted(['Lady Gaga','Ariana Grande','Selena Gomez','Justin Timberlake','Rihanna','Shawn Mendes','Billie Eilish',
+                     'Camila Cabello','Post Malone','Beyonce','Dua Lipa'])
     gui(list_of_singers)
     singer_name=currSingerName
     sorted_list_of_dates = get_dates(singer_name)
