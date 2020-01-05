@@ -1,3 +1,4 @@
+import urllib.request
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from Biography import BiograpyGetter
 import matplotlib.pyplot as plt
@@ -67,7 +68,9 @@ def get_dates(singer_name):
     discography_url = "https://en.wikipedia.org/wiki/" + full_name + "_discography"
     bio = BiograpyGetter(url, discography_url)
     #get all info about singer
-    #singer_picture=bio.getSingerPicture()
+    singer_picture=bio.getSingerPicture()
+    #image = urllib.URLopener()
+    urllib.request.urlretrieve("https:"+singer_picture, "pic.jpg")
     birthdate=bio.getSingerBirthDate()
     spouses=bio.getSingerSpouses()
     singles=bio.getSingerSingles()
@@ -157,6 +160,21 @@ def visualization(list_,name):
 
     # Remove components for a cleaner look
     plt.setp((ax.get_yticklabels() + ax.get_yticklines() +list(ax.spines.values())), visible=False)
+
+    #show pic
+    im = Image.open('pic.jpg')
+    height = im.size[1]
+
+    # We need a float array between 0-1, rather than
+    # a uint8 array between 0-255
+    im = np.array(im).astype(np.float) / 255
+
+    # With newer (1.0) versions of matplotlib, you can
+    # use the "zorder" kwarg to make the image overlay
+    # the plot, rather than hide behind it... (e.g. zorder=10)
+    fig.figimage(im, 0, fig.bbox.ymax - height)
+
+    #show graph
     plt.draw()
     plt.show()
 
