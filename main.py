@@ -20,12 +20,14 @@ events_Dic = {1:"Born" , 2:"Died",  3:"Married",  4:"Divorced",  5:"Single",
 #this function opens gui and show singer's life
 def main():
     global currSingerName
-    list_of_singers=sorted(['Lady Gaga','Ariana Grande','Selena Gomez','Justin Timberlake','Rihanna','Shawn Mendes','Billie Eilish',
-                     'Camila Cabello','Post Malone','Beyonce','Dua Lipa'])
+    list_of_singers=['Lady Gaga','Ariana Grande','Selena Gomez','Justin Timberlake','Rihanna','Shawn Mendes','Billie Eilish',
+                     'Camila Cabello','Post Malone','Beyonce','Dua Lipa','Ellie Goulding','Charli XCX','John Legend',
+                     'Sabrina Carpenter','P!nk','Jennifer Lopez','Lana Del Rey','Natalie Imbruglia','Akon','Nicki Minaj',
+                     'Cardi B','Calvin Harris']
     gui(list_of_singers)
 
 
-
+#this function calls all function in order to get the singer's info and visualize it
 def singerVisualization():
     singer_name=currSingerName
     sorted_list_of_dates = get_dates(singer_name)
@@ -33,7 +35,7 @@ def singerVisualization():
     visualization(sorted_list_of_dates,singer_name)
 
 
-
+#this function opens the gui
 def gui(list_of_singers):
     master = tkr.Tk()
     master.geometry("650x350")
@@ -57,6 +59,7 @@ def gui(list_of_singers):
     tkr.mainloop()
 
 
+#this function closes the gui
 def close_window():
     tkr.destroy()
 
@@ -64,10 +67,13 @@ def callback(selection):
     global currSingerName
     currSingerName = selection
 
+#given singer name, this function returns all dates related to him from wikipedia
 def get_dates(singer_name):
     if ' ' in singer_name:
         names=singer_name.split()
         full_name=names[0]+"_"+names[1]
+        if len(names)>2:
+            full_name=full_name+"_"+names[2]
     else:
         full_name=singer_name
     url = "https://en.wikipedia.org/wiki/" + full_name
@@ -92,6 +98,7 @@ def get_dates(singer_name):
         list.extend(albums)
     list.sort(key=lambda x: x[0])
     return list
+
 #this function takes the events kind and put it in the title
 def arrange_array(events):
     new_events=[]
@@ -107,7 +114,7 @@ def arrange_array(events):
         new_events.append(new_event)
     return new_events
 
-
+#this function draws the singer's history and present it
 def visualization(list_,name):
     dates=[x[0]for x in list_]
     dates = [datetime.strptime(d, "%Y") for d in dates]
