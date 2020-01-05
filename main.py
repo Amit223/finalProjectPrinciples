@@ -22,7 +22,6 @@ def main():
     global currSingerName
     list_of_singers=['Lady Gaga','Ariana Grande','Selena Gomez','Justin Timberlake','Rihanna']
     gui(list_of_singers)
-    print(currSingerName)
     singer_name=currSingerName
     sorted_list_of_dates = get_dates(singer_name)
     sorted_list_of_dates=arrange_array(sorted_list_of_dates)
