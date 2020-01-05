@@ -1,5 +1,4 @@
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
-
 from Biography import BiograpyGetter
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
@@ -9,20 +8,54 @@ from datetime import datetime
 from PIL import Image
 import requests
 from io import BytesIO
+import tkinter as tkr
+from PIL import ImageTk, Image
 
-
+currSingerName = "Lady Gaga"
 events_Dic = {1:"Born" , 2:"Died",  3:"Married",  4:"Divorced",  5:"Single",
                        6:"Album"}  # event-index
 
 
 #this function opens gui and show singer's life
 def main():
+    global currSingerName
     list_of_singers=['Lady Gaga','Ariana Grande','Selena Gomez','Justin Timberlake','Rihanna']
-    singer_name='Justin Timberlake'
+    gui(list_of_singers)
+    print(currSingerName)
+    singer_name=currSingerName
     sorted_list_of_dates = get_dates(singer_name)
     sorted_list_of_dates=arrange_array(sorted_list_of_dates)
     visualization(sorted_list_of_dates,singer_name)
 
+def gui(list_of_singers):
+    master = tkr.Tk()
+    master.geometry("650x350")
+    master.title("Principles Project")
+    master.configure(background='gold')
+
+    set1 = tkr.Label(master, text ="Choose a singer you would like to know more about - ")
+    set1.configure(font=("Arial",20))
+    set1.grid(row=0, column=0)
+    var=tkr.StringVar(master)
+    set2=tkr.OptionMenu(master, var, *list_of_singers, command=callback)
+    set2.configure(font=("Arial",20))
+    set2.grid(row=1, column=0)
+    set3 = tkr.Button(master, text="Submit name", command=master.destroy)
+    set3.configure(font=("Arial",16))
+    set3.grid(row=2, column=0)
+
+    path = "mic.jpg"
+    img = ImageTk.PhotoImage(Image.open(path))
+    tkr.Label(master, image=img).grid(row=3, column = 0)
+    tkr.mainloop()
+
+
+def close_window():
+    tkr.destroy()
+
+def callback(selection):
+    global currSingerName
+    currSingerName = selection
 
 def get_dates(singer_name):
     if ' ' in singer_name:
