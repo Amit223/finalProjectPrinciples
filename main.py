@@ -146,24 +146,14 @@ def visualization(list_,name):
         x_level=x_values[i]
         i+=1
         vert = 'top' if level < 0 else 'bottom'
-        ax.scatter(idate, 0, s=100, facecolor='w', edgecolor='k', zorder=9999)
+        s=ax.scatter(idate, 0, s=100, facecolor='w', edgecolor='k', zorder=9999)
         # Plot a line up to the text
         ax.plot((idate, idate), (0, level), c='r', alpha=.7)
         # Give the text a faint background and align it properly
         ax.text(idate, level, iname,
                 horizontalalignment='right', verticalalignment=vert, fontsize=10,
                 backgroundcolor=(1., 1., 1., .3))
-        #show pic
-        #plt.figure()
-        #ab = AnnotationBbox(im, (x_level, level), xycoords='data', frameon=False)
-        #artists.append(ax.add_artist(ab))
-        #ax.update_datalim(np.column_stack([x_level, level]))
-        #ax.autoscale()
-        #ab = AnnotationBbox(baby_img, (x_level, level), frameon=False)
-        #ab = AnnotationBbox(im, (x_level, level), frameon=False)
-        #ax.add_artist(ab)
-        #ax.update_datalim(np.column_stack([x_level, level]))
-        #ax.autoscale()
+    
 
     ax.set(title=name)
     # Set the xticks formatting
